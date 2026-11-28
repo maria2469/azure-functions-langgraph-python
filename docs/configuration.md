@@ -65,7 +65,7 @@ func_app = app.function_app
 | --- | --- | --- | --- |
 | **Route Trigger Auth (`auth_level`)** | Azure Functions Host | Checks incoming requests for valid function or master keys (`?code=<FUNCTION_KEY>`). | **Yes**, in deployed environments (host-level gate). |
 | **Documentation Schemas / Metadata** | OpenAPI / Swagger (`get_app_metadata()`) | Documents routes, parameters, and declared security schemes for API consumers. | **No.** Documentation metadata is descriptive, not enforcing. |
-| **Resource / Thread Authorization (`authorize=...`)** | Application Callback (`ThreadAuthorizer`) | Validates caller identity, tenant isolation, and `thread_id` ownership on each run. | **Yes**, in Python adapter code on every invocation. |
+| **Resource / Thread Authorization (`authorize=...`)** | Application Callback (`ThreadAuthorizer`) | Provides a hook to enforce caller identity, tenant isolation, and `thread_id` ownership; the application's callback implements those checks. | **Enforced by the application's callback logic** (the adapter invokes the hook on each run; setting a callback does not automatically establish ownership). |
 
 > A function key is a shared secret for the Azure Functions app, **not per-user authorization**.
 > It does not establish ownership of a LangGraph `thread_id`. See
